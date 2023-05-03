@@ -16,15 +16,19 @@ class Sniffer:
 			print(packet.summary())
 
 	def run_forever(self):
-		sniff(iface=self.args.interface, prn=self, store=0)
+		packets = sniff(iface=self.args.interface,count=self.args.c__count)
+		return packets
+		
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-v','--verbose',default=False, action='store_true', help='verbose output, more information')
 
 	parser.add_argument('-i', '--interface', type=str, required=True, help='network interface name')
+	parser.add_argument('-c' '--count', type=int, required=True, help='Number of packets to sniff')
 	args = parser.parse_args()
 	sniffer = Sniffer(args)
 
-	sniffer.run_forever()
+	capture = sniffer.run_forever()
+	wrpcap('iot.pcap', capture)
 
