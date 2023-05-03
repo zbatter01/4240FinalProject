@@ -1,7 +1,7 @@
 from scapy.all import sniff
-
+import sys
 def main():
-   pcap_file_path = "sample1_home_mini.pcapng"
+   pcap_file_path = sys.argv[1]
    packets  = sniff(filter="(ip src host 192.168.0.23) or (ip dst host 192.168.0.23)", prn=summarize, offline=pcap_file_path, store=0)
       
  
