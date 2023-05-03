@@ -18,13 +18,16 @@ class Sniffer:
         if(self.args.input):
             packets = sniff(filter=filter, count=self.args.count, offline=self.args.input)
         else:
-            packets = sniff(filter=filter, count=self.args.count)
+            if(self.args.interface):
+                packets = sniff(filter=filter, count=self.args.count, iface=self.args.interface)
+            else:
+                packets = sniff(filter=filter, count=self.args.count)
         return packets
         
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v','--verbose',default=False, action='store_true', help='verbose output, more information')
+    parser.add_argument('-v', '--verbose',default=False, action='store_true', help='verbose output, more information')
     parser.add_argument('-i', '--interface', type=str, required=False, help='network interface name')
     parser.add_argument('-c', '--count', type=int, required=True, help='Number of packets to sniff')
     parser.add_argument('-o', '--output', type=str, required = False, help='Optional file name for output file, otherwise outputs to the terminal')
